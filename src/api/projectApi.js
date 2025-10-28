@@ -1,7 +1,7 @@
 // src/api/projectApi.js
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/projects";
+const API_URL = "https://cipherschool-assessment-backend.onrender.com/api/projects";
 
 // Create new project
 export const createProjectApi = async (payload, token) => {

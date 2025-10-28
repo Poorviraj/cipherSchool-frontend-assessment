@@ -4,24 +4,30 @@ import { useAuth } from "../context/AuthContext";
 import { getUserProjectsApi, createProjectApi } from "../api/projectApi";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Loader from "../components/Loader";
 
 export default function Dashboard() {
   const { user, token } = useAuth();
   const [projects, setProjects] = useState([]);
   const [newProject, setNewProject] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // Load all user's projects
-  useEffect(() => {
-    (async function () {
-      try {
-        const data = await getUserProjectsApi(token);
-        setProjects(data);
-      } catch (err) {
-        toast.error("Failed to load projects");
-      }
-    })();
-  }, [token]);
+useEffect(() => {
+  (async function () {
+    try {
+      const data = await getUserProjectsApi(token);
+      setProjects(data);
+    } catch {
+      toast.error("Failed to load projects");
+    } finally {
+      setLoading(false);
+    }
+  })();
+}, [token]);
+
+if (loading) return <Loader text="Fetching your projects..." />;
 
   // Create a new project
   const handleCreate = async () => {

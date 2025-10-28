@@ -3,15 +3,18 @@ import { loginApi, registerApi } from "../api/authApi";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Loader from "../components/Loader";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       let data;
       if (isLogin) {
@@ -24,8 +27,17 @@ export default function AuthPage() {
       navigate("/dashboard");
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading)
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-900">
+        <Loader text={isLogin ? "Logging in..." : "Creating account..."} />
+      </div>
+    );
 
   return (
     <div className="flex h-screen items-center justify-center bg-gray-900 text-white">
@@ -60,7 +72,11 @@ export default function AuthPage() {
             className="bg-gray-700 p-2 rounded"
             required
           />
-          <button type="submit" className="bg-blue-600 py-2 rounded hover:bg-blue-500">
+          <button
+            type="submit"
+            className="bg-blue-600 py-2 rounded hover:bg-blue-500 disabled:opacity-50"
+            disabled={loading}
+          >
             {isLogin ? "Login" : "Sign Up"}
           </button>
         </form>
@@ -68,7 +84,9 @@ export default function AuthPage() {
           onClick={() => setIsLogin(!isLogin)}
           className="text-blue-400 text-sm mt-4 text-center cursor-pointer"
         >
-          {isLogin ? "Don’t have an account? Sign Up" : "Already have an account? Login"}
+          {isLogin
+            ? "Don’t have an account? Sign Up"
+            : "Already have an account? Login"}
         </p>
       </div>
     </div>
