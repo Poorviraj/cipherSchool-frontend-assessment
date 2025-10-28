@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* small customizations */
+html, body, #root {
+  height: 100%;
+}
+body {
+  background: #0f172a; /* dark */
+  color: #e6eef8;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+.editor-panel { background: #0b1220; }
+.preview-panel { background: #020617; }
+.sidebar { background: linear-gradient(180deg, #071029, #061225); }
+.navbar { background: rgba(8,12,20,0.85); backdrop-filter: blur(6px); }
+.button { @apply px-3 py-1 rounded-md font-medium; }
